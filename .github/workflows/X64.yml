@@ -40,7 +40,6 @@ jobs:
       env:
        SUPER_TOKEN: ${{ secrets.SUPER_TOKEN }}
       run: |
-        cd openwrt/dl
         touch test
         git init
         git config user.name "bot"
