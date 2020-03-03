@@ -1,4 +1,4 @@
-name: Build OpenWrt X64
+name: Build OpenWrt IPQ40XX
 
 on:
 #  release:
@@ -72,22 +72,54 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-        cd dl
-        find ./ -size +450M -exec rm -f '{}' \; 
 
-
- 
+    - name: Compile the firmware
+      id: compile
+      run: |
+        cd openwrt
+        echo -e "$(nproc) thread compile"
+        make -j$(nproc) || make -j1 V=s
 
     - name:  Push dl
       env:
        SUPER_TOKEN: ${{ secrets.SUPER_TOKEN }}
       run: |
         cd openwrt/dl
+        find ./ -size +450M -exec rm -f '{}' \;
         git init
         git config user.name "bot"
         git config user.email "bot@github.com"
         git add .
         git commit -m "$DATE"
         git push --force --quiet https://$SUPER_TOKEN@github.com/hyird/action-openwrt.git  HEAD:dl
+        
+        
+        
+    - name:  Push packages
+      env:
+       SUPER_TOKEN: ${{ secrets.SUPER_TOKEN }}
+      run: |
+        cd openwrt/bin/packages
+        git init
+        git config user.name "bot"
+        git config user.email "bot@github.com"
+        git add .
+        git commit -m "$DATE"
+        git push --force --quiet https://$SUPER_TOKEN@github.com/hyird/action-openwrt.git  HEAD:ipq40xx_packages
+
+    - name:  Push targets
+      env:
+       SUPER_TOKEN: ${{ secrets.SUPER_TOKEN }}
+      run: |
+        cd openwrt/bin/targets
+        git init
+        git config user.name "bot"
+        git config user.email "bot@github.com"
+        git add .
+        git commit -m "$DATE"
+        git push --force --quiet https://$SUPER_TOKEN@github.com/hyird/action-openwrt.git  HEAD:ipq40xx_targets
+        
+    - name: WeChat notification
+      run: curl https://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=IPQ40XX编译完成
         
 
