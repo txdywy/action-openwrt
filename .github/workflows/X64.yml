@@ -73,46 +73,6 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-        
-    - name: Compile the firmware
-      id: compile
-      run: |
-        cd openwrt
-        echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j1 V=s
-        echo "::set-output name=status::success"
-        
-    - name: Upload packages directory
-      uses: actions/upload-artifact@master
-      with:
-        name: OpenWrt_packages
-        path: openwrt/bin/packages
+        cd dl
+        find ./ -size +450M -exec rm -f '{}' \;        
 
-    - name: Upload targets directory
-      uses: actions/upload-artifact@master
-      with:
-        name: OpenWrt_targets
-        path: openwrt/bin/targets
- 
-    - name: Tar and gzip Bin  directory
-      id: tar
-      run: |
-        cd openwrt/bin
-        tar czvf packages.tar.gz packages
-        tar czvf targets.tar.gz  targets
-        rm -rf packages targets
-        echo "::set-env name=FIRMWARE::$(pwd)"
-
-    - name: Upload packages Release Asset
-      uses: svenstaro/upload-release-action@v1-release
-      with:
-        repo_token: ${{ secrets.TOKEN }}
-        file: ${{ env.FIRMWARE }}/*
-        tag: X64-${{ env.DATE }}
-        overwrite: true
-        file_glob: true
-        
-
-    
-    - name: WeChat notification
-      run: curl https://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=x64设备release成功
