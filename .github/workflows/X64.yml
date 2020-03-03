@@ -74,5 +74,18 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
         cd dl
-        find ./ -size +450M -exec rm -f '{}' \;        
+        find ./ -size +450M -exec rm -f '{}' \; 
+ 
+
+    - name:  Push dl
+      id: push_dl
+      run: |
+        cd openwrt/dl
+        git init
+        git config user.name "bot"
+        git config user.email "bot@github.com"
+        git add .
+        git commit -m "(TZ='Asia/Shanghai' date +@%Y%m%d)"
+        git push --force --quiet "https://${{ secrets.TOKEN }}@github.com/simonsmh/openwrt-dist.git" HEAD:dl
+        
 
