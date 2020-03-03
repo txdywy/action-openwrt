@@ -80,6 +80,18 @@ jobs:
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 V=s
 
+    - name: Upload packages directory
+      uses: actions/upload-artifact@master
+      with:
+        name: OpenWrt_packages
+        path: openwrt/bin/packages
+        
+    - name: Upload targets directory
+      uses: actions/upload-artifact@master
+      with:
+        name: OpenWrt_targets
+        path: openwrt/bin/targets
+
     - name:  Push dl
       env:
        SUPER_TOKEN: ${{ secrets.SUPER_TOKEN }}
