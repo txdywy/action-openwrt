@@ -82,12 +82,12 @@ jobs:
       env:
        SUPER_TOKEN: ${{ secrets.SUPER_TOKEN }}
       run: |
-        touch test
+        cd openwrt/dl
         git init
         git config user.name "bot"
         git config user.email "bot@github.com"
         git add .
-        git commit -m "(TZ='Asia/Shanghai' date +@%Y%m%d)"
+        git commit -m "$DATE"
         git push --force --quiet https://$SUPER_TOKEN@github.com/hyird/action-openwrt.git  HEAD:dl
         
 
