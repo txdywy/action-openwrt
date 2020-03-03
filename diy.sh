@@ -1,4 +1,3 @@
-sed -i 's/openwrt.proxy.ustclug.org/op.hyird.xyz/g' package/lean/default-settings/files/zzz-default-settings
 cat > package/lean/default-settings/files/zzz-default-settings<<-EOF
 #!/bin/sh
 uci set luci.main.lang=zh_cn
