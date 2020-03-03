@@ -19,10 +19,13 @@ uci commit luci
 
 uci set system.@system[0].timezone=CST-8
 uci set system.@system[0].zonename=Asia/Shanghai
-
 uci commit system
+
 uci set fstab.@global[0].anon_mount=1
 uci commit fstab
+
+uci set network.globals.ula_prefix=''
+uci commit network
 
 rm -f /usr/lib/lua/luci/view/admin_status/index/mwan.htm
 rm -f /usr/lib/lua/luci/view/admin_status/index/upnp.htm
