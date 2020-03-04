@@ -7,7 +7,8 @@ git clone https://github.com/tty228/luci-app-serverchan.git                     
 
 #fix count error
 rm package/lean/autocore/files/index.htm
-cp  ../diy/index.htm   package/lean/autocore/files/
+cp  ../diy/autocre/index.htm   package/lean/autocore/files/
+ln -s ../../diy/myipk ./package/
 
 
 
