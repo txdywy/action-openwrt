@@ -78,7 +78,7 @@ jobs:
       run: |
         cd openwrt
         echo -e "3 thread compile"
-        make -j3 || make -j3 V=s
+        make -j2 || make -j1 V=s
 
     - name: Upload packages directory
       uses: actions/upload-artifact@master
