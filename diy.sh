@@ -75,7 +75,7 @@ EOF
 
 
 
-cat package/lean/automount/Makefile <<-EOF
+cat > package/lean/automount/Makefile <<-EOF
 #
 # Copyright (C) 2010-2011 OpenWrt.org
 #
